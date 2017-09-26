@@ -2,8 +2,6 @@ const scale = 4;
 const height = 20;
 const width = 28;
 
-const flatten = array => array.reduce((prev, curr) => prev.concat(curr))
-
 const Triangle = points => ({dx, dy, color, id}) => {
   const pointsString = points
     .map(([x, y]) => ([(x + dx) * width, (y + dy) * height]))
@@ -80,38 +78,13 @@ const LevelSplit = (props) => {
   )
 }
 
-const rotations = [12, 4, 4, -3, -3, 14, 7, 7, -1, -1, -8, -8, 8, 8, 1, 1, -7, -7, -14, 3, 3, -4, -4, -12]
-
-const salmon = piece =>
-  rotations
-    .map((delta, i) => delta > 0 ?
-        (piece & Math.pow(2, 23 - i)) >> delta :
-        (piece & Math.pow(2, 23 - i)) << -delta
-    )
-    .reduce((prev, curr) => prev | curr)
-
-const piece1 = 0b111110111110001110000100;
-const piece2 = 0b110001100000110000011000;
-const piece3 = 0b111111100011000000000000;
-const piece4 = 0b111111100011000000000000;
-
 const PieceRenderer = ({piece}) => (
-  <div>
-    <ColorCube state={{red: piece}}/>
-    <ColorCube state={{red: salmon(piece)}}/>
-    <ColorCube state={{red: salmon(salmon(piece))}}/>
-    <ColorCube state={{red: salmon(salmon(salmon(piece)))}}/>
-    <ColorCube state={{red: salmon(salmon(salmon(salmon(piece))))}}/>
-    <ColorCube state={{red: salmon(salmon(salmon(salmon(salmon(piece)))))}}/>
-  </div>
+  <ColorCube state={{red: piece}}/>
 )
-
+//<LevelSplit {...levels[30]}/>
 ReactDOM.render(
   <div>
-    <LevelSplit {...levels[30]}/>
-    <PieceRenderer piece={piece1}/>
-    <PieceRenderer piece={piece2}/>
-    <PieceRenderer piece={piece3}/>
-    <PieceRenderer piece={piece4}/>
+    {groups[0].map((piece, i) => (<PieceRenderer key={i} piece={piece}/>))}
   </div>,
-  document.getElementById('root'));
+  document.getElementById('root')
+);

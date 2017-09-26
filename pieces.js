@@ -31,3 +31,14 @@ const groups = [
   [0,4,7,10,13,1,2,5,8,11,14,3,6,9,12,15],
   [16,4,7,10,13,17,18,5,8,11,14,19,6,9,12,15],
 ].map(pieceGroup);
+
+const getRotations = piece => {
+  const first = rotate(piece);
+  const second = rotate(first);
+  const third = rotate(second);
+  const fourth = rotate(third);
+  const fifth = rotate(fourth);
+  return [piece, first, second, third, fourth, fifth];
+}
+
+const groupsWithRotations = groups.map(group => group.map(getRotations));

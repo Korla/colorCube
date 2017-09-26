@@ -1,4 +1,4 @@
-const scale = 4;
+const scale = 3;
 const height = 20;
 const width = 28;
 
@@ -7,14 +7,13 @@ const Triangle = points => ({dx, dy, color, id}) => {
     .map(([x, y]) => ([(x + dx) * width, (y + dy) * height]))
     .map(p => p.join(','))
     .join(' ');
-  return (<polygon points={pointsString} fill={color} stroke="black" strokeWidth="1" vectorEffect="non-scaling-stroke"/>)
+  return (<polygon points={pointsString} fill={color} strokeWidth="1" stroke="black" vectorEffect="non-scaling-stroke"/>)
 }
 
 const TriangleUp = Triangle([[0, 1], [1/2, 0], [1, 1]]);
 const TriangleDown = Triangle([[0, 0], [1/2, 1], [1, 0]]);
 
-const colors = ['white', 'purple', 'orange', 'cyan', 'blue', 'green', 'red'];
-colors.reverse();
+const colors = ['red', 'green', 'blue', 'cyan', 'orange', 'purple', 'white'];
 const getColor = (state, id) => colors
   .reduce((color, possibleColor) => id & state[possibleColor] ? possibleColor : color, 'grey');
 
@@ -55,7 +54,7 @@ const ColorCube = ({state, color}) => {
 }
 
 const LevelSplit = (props) => {
-  const {white, purple, orange, cyan, blue, green, red} = props;
+  const {white, purple, orange, cyan, blue, green, red} = props.level;
   return (
     <div>
       <div>
@@ -80,11 +79,13 @@ const LevelSplit = (props) => {
 
 const PieceRenderer = ({piece}) => (
   <ColorCube state={{red: piece}}/>
-)
-//<LevelSplit {...levels[30]}/>
+);
+
+const result = solve(levels[1], groupsWithRotations[0]);
+
 ReactDOM.render(
   <div>
-    {groups[0].map((piece, i) => (<PieceRenderer key={i} piece={piece}/>))}
+    {Object.keys(result).map(key => (<PieceRenderer key={key} piece={result[key]}/>))}
   </div>,
   document.getElementById('root')
 );
